@@ -1,56 +1,53 @@
-getCustomer(1, (customer) => {
-    console.log('Customer:', customer);
-    if(customer.isGold) {
-        getTopMovies((movies) => {
-            console.log('Movies:', movies);
-            sendEmail(customer.email, movies, () => {
-                console.log('Email sent successfully');
+// Async function
+async function notifyCustomer(){
+    try{
+        const customer = await getCustomer(1);
+        console.log('Customer:', customer);
+        if(customer.isGold){
+            const movies= await getTopMovies();
+            console.log('Top Movies:', movies);
+            await sendEmail(customer.email, movies);
+            console.log(`Mail sent to ${customer.name} successfully!!!`);
+        }
+    }
+    catch(err){
+        console.log('Error:', err.message);
+    }
+}
+
+function  getCustomer(id){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve({
+                id: id,
+                name: 'Karthik',
+                isGold: true,
+                email: 'email'
             });
-        });
-    }
-});
-
-
-function  getCustomer(id, callback){
-    setTimeout(() => {
-    const customer = {
-        id: id,
-        name: 'Karthik',
-        isGold: true,
-        email: 'email'
-    }
-    callback(customer);
-    }, 2000);
+        }, 2000);
+    });
 }
 
-function getTopMovies(callback){
-    setTimeout(() => {
-    const movies =
-        [
-            'Avengers 1',
-            'Avengers: Civil War',
-            'Avengers: Age of Ultron',
-            'Avengers: Infinity War',
-            'Avengers: Endgame'
-        ];
-    callback(movies);
-    }, 2000);
+function getTopMovies(){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+        resolve([
+                'Avengers 1',
+                'Avengers: Civil War',
+                'Avengers: Age of Ultron',
+                'Avengers: Infinity War',
+                'Avengers: Endgame'
+        ]);
+        }, 2000);
+    });
 }
 
-function sendEmail(mailId, movies, callback){
-    setTimeout(() => {
-        callback();
-    }, 1000);
+function sendEmail(mailId, movies){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve();
+        }, 1000);
+    })
 }
 
-
-
-
-
-
-
-
-
-
-
-
+notifyCustomer();
