@@ -1,13 +1,7 @@
 console.log('Before');
+displayCommits();
+console.log('After');
 
-// Promise approach
-// getUser(1)
-//     .then(user => getRepos(user.gitHubUsername))
-//     .then(repos => getCommits(repos[0]))
-//     .then(commits => console.log(commits))
-//     .catch(err => console.log('error', err.message));
-
-// Async and Await approach
 async function displayCommits(){
     try {
         const user = await getUser(1);
@@ -20,8 +14,6 @@ async function displayCommits(){
     }
 }
 
-displayCommits();
-
 function getCommits(repo){
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -31,9 +23,6 @@ function getCommits(repo){
         }, 100);
     });
 }
-
-console.log('After');
-
 
 function getUser(id){
     return new Promise((resolve, reject) => {
